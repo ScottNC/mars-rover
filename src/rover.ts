@@ -1,5 +1,6 @@
 type Directions = 'L' | 'R';
 type Movement = 'M';
+type Instructions = Movement | Directions;
 
 type TurnDirections = 'N' | 'E' | 'S' | 'W';
 
@@ -7,7 +8,7 @@ type TurnDirectionMap = {
   [key in Directions]: {[key in TurnDirections] : TurnDirections};
 };
 
-type Position = `${string}${TurnDirections}`;
+type Position = `${number} ${number} ${TurnDirections}`;
 
 const TURN_DIRECTIONS_MAP: TurnDirectionMap = {
   R : {
@@ -25,18 +26,19 @@ const TURN_DIRECTIONS_MAP: TurnDirectionMap = {
 } as const;
 
 export function runRovers([, startPoint, instructions]: [string, Position, string]): Position[] {
-  const valid = [...instructions].every(a => isDirection(a));
+  const allInstructions: Instructions[] = instructions.split('') as Instructions[];
+  let [xPositionString, yPositionString, direction] : [string, string, TurnDirections] = startPoint.split(' ') as [`${number}`, `${number}`, TurnDirections];
+  let yPosition = parseInt(yPositionString);
 
-  if (!valid) return ['0 1 N'];
-
-  const allInstructions: Directions[] = instructions.split('') as Directions[];
-  let futureDirection: TurnDirections = startPoint[startPoint.length - 1] as TurnDirections;
-
-  allInstructions.forEach((instruction: Directions) => {
-    futureDirection  = TURN_DIRECTIONS_MAP[instruction][futureDirection];
+  allInstructions.forEach((instruction: Instructions) => {
+    if (isDirection(instruction))
+      direction  = TURN_DIRECTIONS_MAP[instruction as Directions][direction];
+    else {
+      yPosition ++;
+    }
   })
 
-  return [startPoint.slice(0, startPoint.length - 1) + futureDirection as Position];
+  return [[xPositionString, yPosition.toString(), direction].join(' ') as Position];
 }
 
 function isDirection(instruction : string) {

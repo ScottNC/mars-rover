@@ -4,6 +4,11 @@ describe("runRovers", () => {
     expect(runRovers(['1 1', '0 0 N', 'M'])).toEqual(['0 1 N']);
   });
 
+  it("should move multiple steps north", () => {
+    expect(runRovers(['3 3', '0 0 N', 'MMM'])).toEqual(['0 3 N']);
+    expect(runRovers(['8 8', '0 3 N', 'MMMMM'])).toEqual(['0 8 N']);
+  });
+
   it("should turn left and right in all directions", () => {
     expect(runRovers(['1 1', '0 0 N', 'L'])).toEqual(['0 0 W']);
     expect(runRovers(['1 1', '0 0 W', 'L'])).toEqual(['0 0 S']);
