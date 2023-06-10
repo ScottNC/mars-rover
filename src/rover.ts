@@ -36,7 +36,7 @@ export function runRovers([, startPoint, instructions]: [string, Position, strin
     futureDirection  = TURN_DIRECTIONS_MAP[instruction][futureDirection];
   })
 
-  return ['0 0 ' + futureDirection as Position];
+  return [startPoint.slice(0, startPoint.length - 1) + futureDirection as Position];
 }
 
 function isDirection(instruction : string) {

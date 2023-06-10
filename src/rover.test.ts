@@ -21,4 +21,9 @@ describe("runRovers", () => {
     expect(runRovers(['1 1', '0 0 E', 'LLLL'])).toEqual(['0 0 E']);
     expect(runRovers(['1 1', '0 0 E', 'RRRL'])).toEqual(['0 0 W']);
   })
+
+  it("should be able turn on any location", () => {
+    expect(runRovers(['5 5', '4 4 N', 'LL'])).toEqual(['4 4 S']);
+    expect(runRovers(['5 5', '2 3 N', 'R'])).toEqual(['2 3 E']);
+  })
 });
