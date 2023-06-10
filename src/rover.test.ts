@@ -9,6 +9,12 @@ describe("runRovers", () => {
     expect(runRovers(['8 8', '0 3 N', 'MMMMM'])).toEqual(['0 8 N']);
   });
 
+  it("should move multiple steps south", () => {
+    expect(runRovers(['3 3', '0 1 S', 'M'])).toEqual(['0 0 S']);
+    expect(runRovers(['8 8', '0 7 S', 'MMM'])).toEqual(['0 4 S']);
+    expect(runRovers(['8 8', '0 8 S', 'MMMMMMM'])).toEqual(['0 1 S']);
+  });
+
   it("should turn left and right in all directions", () => {
     expect(runRovers(['1 1', '0 0 N', 'L'])).toEqual(['0 0 W']);
     expect(runRovers(['1 1', '0 0 W', 'L'])).toEqual(['0 0 S']);

@@ -34,7 +34,10 @@ export function runRovers([, startPoint, instructions]: [string, Position, strin
     if (isDirection(instruction))
       direction  = TURN_DIRECTIONS_MAP[instruction as Directions][direction];
     else {
-      yPosition ++;
+      if (direction === 'N')
+        yPosition ++;
+      else
+        yPosition --;
     }
   })
 
