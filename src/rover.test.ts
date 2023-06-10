@@ -14,4 +14,11 @@ describe("runRovers", () => {
     expect(runRovers(['1 1', '0 0 S', 'R'])).toEqual(['0 0 W']);
     expect(runRovers(['1 1', '0 0 W', 'R'])).toEqual(['0 0 N']);
   });
+
+  it("should be able to turn multiple times", () => {
+    expect(runRovers(['1 1', '0 0 N', 'LL'])).toEqual(['0 0 S']);
+    expect(runRovers(['1 1', '0 0 S', 'RL'])).toEqual(['0 0 S']);
+    expect(runRovers(['1 1', '0 0 E', 'LLLL'])).toEqual(['0 0 E']);
+    expect(runRovers(['1 1', '0 0 E', 'RRRL'])).toEqual(['0 0 W']);
+  })
 });

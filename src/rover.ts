@@ -24,11 +24,21 @@ const TURN_DIRECTIONS_MAP: TurnDirectionMap = {
   }
 } as const;
 
-export function runRovers([, startPoint, instructions]: [string, Position, Directions | Movement]): Position[] {
-  if (instructions === 'M') return ['0 1 N'];
+export function runRovers([, startPoint, instructions]: [string, Position, string]): Position[] {
+  const valid = [...instructions].every(a => isDirection(a));
 
-  const currentDirection : TurnDirections = startPoint[startPoint.length - 1] as TurnDirections;
-  const futureDirection : TurnDirections = TURN_DIRECTIONS_MAP[instructions][currentDirection];
+  if (!valid) return ['0 1 N'];
+
+  const allInstructions: Directions[] = instructions.split('') as Directions[];
+  let futureDirection: TurnDirections = startPoint[startPoint.length - 1] as TurnDirections;
+
+  allInstructions.forEach((instruction: Directions) => {
+    futureDirection  = TURN_DIRECTIONS_MAP[instruction][futureDirection];
+  })
 
   return ['0 0 ' + futureDirection as Position];
+}
+
+function isDirection(instruction : string) {
+  return ['L', 'R'].includes(instruction);
 }
