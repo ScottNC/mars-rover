@@ -7,4 +7,8 @@ describe("runRovers", () => {
   it("should turn left", () => {
     expect(runRovers(['1 1', '0 0 N', 'L'])).toEqual(['0 0 W']);
   });
+
+  it("should turn right", () => {
+    expect(runRovers(['1 1', '0 0 N', 'R'])).toEqual(['0 0 E']);
+  });
 });
