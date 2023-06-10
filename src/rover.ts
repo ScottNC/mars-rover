@@ -9,6 +9,7 @@ type TurnDirectionMap = {
 };
 
 type Position = `${number} ${number} ${TurnDirections}`;
+type PositionArray = [`${number}`, `${number}`, TurnDirections];
 
 const TURN_DIRECTIONS_MAP: TurnDirectionMap = {
   R : {
@@ -39,18 +40,23 @@ const TURNS : TurnFunctions = {
   W: west
 } as const;
 
-export function runRovers([, startPoint, instructions]: [string, Position, string]): Position[] {
+export function runRovers([, startPoint, instructions]: [string, Position, string]) {
   const allInstructions: Instructions[] = instructions.split('') as Instructions[];
-  let [xPositionString, yPositionString, direction] : [string, string, TurnDirections] = startPoint.split(' ') as [`${number}`, `${number}`, TurnDirections];
+
+  return [allInstructions.reduce(moveRover, startPoint)];
+}
+
+function moveRover(position: Position, instruction: Instructions) {
+
+  let [xPositionString, yPositionString, direction] : PositionArray = position.split(' ') as PositionArray;
+  
   let yPosition: number = parseInt(yPositionString);
   let xPosition: number = parseInt(xPositionString);
 
-  allInstructions.forEach((instruction: Instructions) => {
-    if (instruction === 'M')
-      [xPosition, yPosition] = TURNS[direction](xPosition, yPosition);
-    else
-      direction  = TURN_DIRECTIONS_MAP[instruction as Directions][direction];
-  })
+  if (instruction === 'M') {
+    [xPosition, yPosition] = TURNS[direction](xPosition, yPosition);
+  } else
+    direction  = TURN_DIRECTIONS_MAP[instruction][direction];
 
-  return [[xPosition.toString(), yPosition.toString(), direction].join(' ') as Position];
+  return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
 }
