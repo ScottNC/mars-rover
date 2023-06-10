@@ -1,6 +1,10 @@
 import { runRovers } from "./rover";
 describe("runRovers", () => {
-  it("should return 15 for add(10,5)", () => {
+  it("should move 1 step north", () => {
     expect(runRovers(['1 1', '0 0 N', 'M'])).toEqual(['0 1 N']);
+  });
+
+  it("should turn left", () => {
+    expect(runRovers(['1 1', '0 0 N', 'L'])).toEqual(['0 0 W']);
   });
 });

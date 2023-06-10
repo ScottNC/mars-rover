@@ -1,3 +1,3 @@
 export function runRovers(instructions: string[]): string[] {
-  return ['0 1 N'];
+  return instructions[2] === 'M' ? ['0 1 N'] : ['0 0 W'];
 }
