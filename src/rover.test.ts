@@ -46,4 +46,11 @@ describe("runRovers", () => {
     expect(runRovers(['5 5', '4 4 N', 'LL'])).toEqual(['4 4 S']);
     expect(runRovers(['5 5', '2 3 N', 'R'])).toEqual(['2 3 E']);
   })
+
+  it("should be to make turns and steps", () => {
+    expect(runRovers(['5 5', '4 4 N', 'LMLM'])).toEqual(['3 3 S']);
+    expect(runRovers(['5 5', '2 0 E', 'MMLMMRM'])).toEqual(['5 2 E']);
+    expect(runRovers(['5 5', '1 2 N', 'LMLMLMLMM'])).toEqual(['1 3 N']);
+    expect(runRovers(['5 5', '3 3 E', 'MMRMMRMRRM'])).toEqual(['5 1 E']);
+  })
 });
