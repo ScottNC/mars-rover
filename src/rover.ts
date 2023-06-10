@@ -1,17 +1,17 @@
-type Directions = 'L' | 'R';
+type Direction = 'L' | 'R';
 type Movement = 'M';
-type Instructions = Movement | Directions;
+type Instruction = Movement | Direction;
 
-type TurnDirections = 'N' | 'E' | 'S' | 'W';
+type CardinalDirections = 'N' | 'E' | 'S' | 'W';
 
-type TurnDirectionMap = {
-  [key in Directions]: {[key in TurnDirections] : TurnDirections};
+type CardinalDirectionMap = {
+  [key in Direction]: {[key in CardinalDirections] : CardinalDirections};
 };
 
-type Position = `${number} ${number} ${TurnDirections}`;
-type PositionArray = [`${number}`, `${number}`, TurnDirections];
+type Position = `${number} ${number} ${CardinalDirections}`;
+type PositionArray = [`${number}`, `${number}`, CardinalDirections];
 
-const TURN_DIRECTIONS_MAP: TurnDirectionMap = {
+const CARDINAL_DIRECTIONS_MAP: CardinalDirectionMap = {
   R : {
     N: 'E',
     E: 'S',
@@ -31,9 +31,9 @@ const south = (x: number, y: number) => [x, y - 1];
 const east = (x: number, y: number) => [x + 1, y];
 const west = (x: number, y: number) => [x - 1, y];
 
-type TurnFunctions = {[key in TurnDirections] : Function};
+type MoveFunctions = {[key in CardinalDirections] : Function};
 
-const TURNS : TurnFunctions = {
+const MOVES : MoveFunctions = {
   N: north,
   E: east,
   S: south,
@@ -41,22 +41,22 @@ const TURNS : TurnFunctions = {
 } as const;
 
 export function runRovers([, startPoint, instructions]: [string, Position, string]) {
-  const allInstructions: Instructions[] = instructions.split('') as Instructions[];
+  const allInstructions: Instruction[] = instructions.split('') as Instruction[];
 
   return [allInstructions.reduce(moveRover, startPoint)];
 }
 
-function moveRover(position: Position, instruction: Instructions) {
+function moveRover(position: Position, instruction: Instruction) {
 
   let [xPositionString, yPositionString, direction] : PositionArray = position.split(' ') as PositionArray;
   
   let yPosition: number = parseInt(yPositionString);
   let xPosition: number = parseInt(xPositionString);
 
-  if (instruction === 'M') {
-    [xPosition, yPosition] = TURNS[direction](xPosition, yPosition);
-  } else
-    direction  = TURN_DIRECTIONS_MAP[instruction][direction];
+  if (instruction === 'M')
+    [xPosition, yPosition] = MOVES[direction](xPosition, yPosition);
+  else
+    direction = CARDINAL_DIRECTIONS_MAP[instruction][direction];
 
   return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
 }
