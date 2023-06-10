@@ -43,6 +43,8 @@ const MOVES : MoveFunctions = {
 export function runRovers([, startPoint, instructions]: [string, Position, string]) {
   const allInstructions: Instruction[] = instructions.split('') as Instruction[];
 
+  if (!allInstructions.every(a => ['M', 'L', 'R'].includes(a))) throw new Error("Instructions must only include M, L or R");
+
   return [allInstructions.reduce(moveRover, startPoint)];
 }
 
