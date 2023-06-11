@@ -1,5 +1,8 @@
-type Direction = 'L' | 'R';
-type Movement = 'M';
+const ALL_DIRECTIONS = ['L', 'R'];
+const ONLY_MOVEMENT = 'M';
+
+type Direction = typeof ALL_DIRECTIONS[number];
+type Movement = typeof ONLY_MOVEMENT;
 type Instruction = Movement | Direction;
 
 type CardinalDirections = 'N' | 'E' | 'S' | 'W';
@@ -46,11 +49,11 @@ const MOVES : MoveFunctions = {
 export function runRovers([gridString, startPoint, instructions]: [GridString, Position, string]) {
   const allInstructions: Instruction[] = instructions.split('') as Instruction[];
 
-  if (!allInstructions.every(a => ['M', 'L', 'R'].includes(a))) throw new Error("Instructions must only include M, L or R");
+  if (!allInstructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a))) throw new Error("Instructions must only include M, L or R");
 
   const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
 
-  return [allInstructions.reduce((position, instruction) => moveRover(grid, position, instruction), startPoint)];
+  return [allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction), startPoint)];
 }
 
 function moveRover(grid: Grid, position: Position, instruction: Instruction) {
@@ -60,7 +63,7 @@ function moveRover(grid: Grid, position: Position, instruction: Instruction) {
   let yPosition: number = parseInt(yPositionString);
   let xPosition: number = parseInt(xPositionString);
 
-  if (instruction === 'M')
+  if (instruction === ONLY_MOVEMENT)
     [xPosition, yPosition] = reposition(xPosition, yPosition, direction, grid);
   else
     direction = CARDINAL_DIRECTIONS_MAP[instruction][direction];
