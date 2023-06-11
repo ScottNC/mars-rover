@@ -1,18 +1,19 @@
 const ALL_DIRECTIONS = ['L', 'R'];
 const ONLY_MOVEMENT = 'M';
+const CARDINALS = ['N', 'E', 'S', 'W']
 
 type Direction = typeof ALL_DIRECTIONS[number];
 type Movement = typeof ONLY_MOVEMENT;
 type Instruction = Movement | Direction;
 
-type CardinalDirections = 'N' | 'E' | 'S' | 'W';
+type CardinalDirections = typeof CARDINALS[number];
 
 type CardinalDirectionMap = {
   [key in Direction]: {[key in CardinalDirections] : CardinalDirections};
 };
 
 type Position = `${number} ${number} ${CardinalDirections}`;
-type PositionArray = [`${number}`, `${number}`, CardinalDirections];
+type PositionArray = [number, number, CardinalDirections];
 
 type GridString = `${number} ${number}`
 type Grid = [number, number];
@@ -47,11 +48,11 @@ const MOVES : MoveFunctions = {
 } as const;
 
 export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
-  const arr = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
+  const evenNumbers = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
 
   const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
 
-  return arr.map(index => {
+  return evenNumbers.map(index => {
     try {
       return runSingleRover(grid, args[index] as Position, args[index + 1]);
     } catch (e) {
@@ -70,10 +71,7 @@ function runSingleRover(grid: Grid, startPoint: Position, instructions: string) 
 
 function moveRover(grid: Grid, position: Position, instruction: Instruction) {
 
-  let [xPositionString, yPositionString, direction] : PositionArray = position.split(' ') as PositionArray;
-  
-  let yPosition: number = parseInt(yPositionString);
-  let xPosition: number = parseInt(xPositionString);
+  let [xPosition, yPosition, direction] : PositionArray = convertPositionToArray(position) as PositionArray;
 
   if (instruction === ONLY_MOVEMENT)
     [xPosition, yPosition] = reposition(xPosition, yPosition, direction, grid);
@@ -93,4 +91,20 @@ function reposition(x: number, y: number, direction: CardinalDirections, grid: G
 
 function isInstruction(instructions: string[]) {
   return instructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a));
+}
+
+function convertPositionToArray(position: string) {
+  const positionArray = position.split(' ');
+  if (positionArray.length !== 3) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+
+  const xPosition: number = parseInt(positionArray[0]);
+  const yPosition: number = parseInt(positionArray[1]);
+
+  if (isNaN(xPosition + yPosition)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+
+  const direction = positionArray[2];
+
+  if (!CARDINALS.includes(direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+
+  return [xPosition, yPosition, direction];
 }

@@ -77,4 +77,9 @@ describe("runRovers", () => {
     expect(runRovers(['5 5', '0 0 N', 'M', '5 5 W', 'hello'])).toEqual(['0 1 N', null]);
   });
 
+  it("should move one rover when two are inputted but one doesn't match the position", () => {
+    expect(runRovers(['5 5', '0 0 N', 'M', '5 5 Q', 'MLM'])).toEqual(['0 1 N', null]);
+    expect(runRovers(['5 5', '0 0 N', 'M', 'hello', 'MLM'])).toEqual(['0 1 N', null])
+  });
+
 });
