@@ -64,4 +64,8 @@ describe("runRovers", () => {
     expect(runRovers(['4 4', '0 4 N', 'M'])).toEqual(['0 4 N']);
     expect(runRovers(['4 4', '4 0 E', 'M'])).toEqual(['4 0 E']);
   });
+
+  it("should carry on moving after hitting boundary", () => {
+    expect(runRovers(['3 3', '2 2 N', 'MMMMLMLMM'])).toEqual(['1 1 S']);
+  });
 });
