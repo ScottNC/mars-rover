@@ -11,6 +11,9 @@ type CardinalDirectionMap = {
 type Position = `${number} ${number} ${CardinalDirections}`;
 type PositionArray = [`${number}`, `${number}`, CardinalDirections];
 
+type GridString = `${number} ${number}`
+type Grid = [number, number];
+
 const CARDINAL_DIRECTIONS_MAP: CardinalDirectionMap = {
   R : {
     N: 'E',
@@ -40,15 +43,17 @@ const MOVES : MoveFunctions = {
   W: west
 } as const;
 
-export function runRovers([, startPoint, instructions]: [string, Position, string]) {
+export function runRovers([gridString, startPoint, instructions]: [GridString, Position, string]) {
   const allInstructions: Instruction[] = instructions.split('') as Instruction[];
 
   if (!allInstructions.every(a => ['M', 'L', 'R'].includes(a))) throw new Error("Instructions must only include M, L or R");
 
-  return [allInstructions.reduce(moveRover, startPoint)];
+  const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
+
+  return [allInstructions.reduce((position, instruction) => moveRover(grid, position, instruction), startPoint)];
 }
 
-function moveRover(position: Position, instruction: Instruction) {
+function moveRover(grid: Grid, position: Position, instruction: Instruction) {
 
   let [xPositionString, yPositionString, direction] : PositionArray = position.split(' ') as PositionArray;
   
@@ -56,9 +61,17 @@ function moveRover(position: Position, instruction: Instruction) {
   let xPosition: number = parseInt(xPositionString);
 
   if (instruction === 'M')
-    [xPosition, yPosition] = MOVES[direction](xPosition, yPosition);
+    [xPosition, yPosition] = reposition(xPosition, yPosition, direction, grid);
   else
     direction = CARDINAL_DIRECTIONS_MAP[instruction][direction];
 
   return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
+}
+
+function keepInBound(coordinate: number, maxBound: number) {
+  return coordinate <= 0 ? 0 : coordinate >= maxBound ? maxBound : coordinate;
+}
+
+function reposition(x: number, y: number, direction: CardinalDirections, grid: Grid) {
+  return MOVES[direction](x, y).map((coordinate: number, idx: 0 | 1) => keepInBound(coordinate, grid[idx]));
 }

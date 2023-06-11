@@ -57,4 +57,11 @@ describe("runRovers", () => {
   it("should throw an error is instructions contain other characters", () => {
     expect(() => runRovers(['3 3', '0 0 N', 'MDM'])).toThrow("Instructions must only include M, L or R");
   });
+
+  it("should not be able to travel out of bounds", () => {
+    expect(runRovers(['4 4', '0 0 S', 'M'])).toEqual(['0 0 S']);
+    expect(runRovers(['4 4', '0 0 W', 'M'])).toEqual(['0 0 W']);
+    expect(runRovers(['4 4', '0 4 N', 'M'])).toEqual(['0 4 N']);
+    expect(runRovers(['4 4', '4 0 E', 'M'])).toEqual(['4 0 E']);
+  });
 });
