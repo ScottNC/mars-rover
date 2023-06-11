@@ -62,7 +62,7 @@ export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
 }
 
 function runSingleRover(grid: Grid, startPoint: Position, instructions: string) {
-  const allInstructions: Instruction[] = instructions.split('') as Instruction[];
+  const allInstructions: Instruction[] = instructions.split('');
 
   if (!isInstruction(allInstructions)) throw new Error("Instructions must only include M, L or R");
 
@@ -82,7 +82,10 @@ function moveRover(grid: Grid, position: Position, instruction: Instruction) {
 }
 
 function keepInBound(coordinate: number, maxBound: number) {
-  return coordinate <= 0 ? 0 : coordinate >= maxBound ? maxBound : coordinate;
+  if (coordinate <= 0)
+    return 0;
+
+  return coordinate >= maxBound ? maxBound : coordinate;
 }
 
 function reposition(x: number, y: number, direction: CardinalDirections, grid: Grid) {
