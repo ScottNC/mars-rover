@@ -14,6 +14,7 @@ type CardinalDirectionMap = {
 
 type Position = `${number} ${number} ${CardinalDirections}`;
 type PositionArray = [number, number, CardinalDirections];
+type ArrayOfPositions = (Position | null)[];
 
 type GridString = `${number} ${number}`
 type Grid = [number, number];
@@ -48,37 +49,53 @@ const MOVES : MoveFunctions = {
 } as const;
 
 export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
-  const evenNumbers = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
+  const evenNumbers: number[] = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
 
   const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
 
-  return evenNumbers.map(index => {
+  const newPositions: ArrayOfPositions = [];
+
+  return evenNumbers.reduce((newPositions, index) => {
     try {
-      return runSingleRover(grid, args[index] as Position, args[index + 1]);
+      newPositions.push(runSingleRover(grid, args[index] as Position, args[index + 1], newPositions));
+      return newPositions;
     } catch (e) {
-      return null;
+      newPositions.push(null);
+      return newPositions;
     }
-  });
+  }, newPositions);
 }
 
-function runSingleRover(grid: Grid, startPoint: Position, instructions: string) {
+function runSingleRover(grid: Grid, startPoint: Position, instructions: string, otherRovers: ArrayOfPositions) {
   const allInstructions: Instruction[] = instructions.split('');
 
   if (!isInstruction(allInstructions)) throw new Error("Instructions must only include M, L or R");
 
-  return allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction), startPoint);
+  return allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction, otherRovers), startPoint);
 }
 
-function moveRover(grid: Grid, position: Position, instruction: Instruction) {
+function moveRover(grid: Grid, position: Position, instruction: Instruction, otherRovers: ArrayOfPositions) {
 
   let [xPosition, yPosition, direction] : PositionArray = convertPositionToArray(position) as PositionArray;
 
-  if (instruction === ONLY_MOVEMENT)
-    [xPosition, yPosition] = reposition(xPosition, yPosition, direction, grid);
-  else
+  if (instruction === ONLY_MOVEMENT) {
+    const [newX, newY] = reposition(xPosition, yPosition, direction, grid);
+    [xPosition, yPosition] = checkCollision(newX, newY, otherRovers) ? [xPosition, yPosition] : [newX, newY];
+  } else
     direction = CARDINAL_DIRECTIONS_MAP[instruction][direction];
 
   return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
+}
+
+function checkCollision(newX: number, newY: number, otherRovers: ArrayOfPositions) {
+  return !!otherRovers.filter((rover: Position | null) => {
+    if (rover === null) return false;
+
+    const roverArray: PositionArray = convertPositionToArray(rover);
+
+    if (newX === roverArray[0] && newY === roverArray[1]) return true;
+    return false;
+  }).length;
 }
 
 function keepInBound(coordinate: number, maxBound: number) {
@@ -109,5 +126,5 @@ function convertPositionToArray(position: string) {
 
   if (!CARDINALS.includes(direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
 
-  return [xPosition, yPosition, direction];
+  return [xPosition, yPosition, direction] as PositionArray;
 }

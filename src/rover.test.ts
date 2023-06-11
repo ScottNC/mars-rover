@@ -82,4 +82,7 @@ describe("runRovers", () => {
     expect(runRovers(['5 5', '0 0 N', 'M', 'hello', 'MLM'])).toEqual(['0 1 N', null])
   });
 
+  it("should not allow the rover to move if it's going to crash with another rover", () => {
+    expect(runRovers(['5 5', '0 0 N', 'M', '0 2 S', 'M'])).toEqual(['0 1 N', '0 2 S']);
+  });
 });
