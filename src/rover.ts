@@ -91,8 +91,7 @@ function checkCollision(newX: number, newY: number, otherRovers: ArrayOfPosition
 
     const roverArray: PositionArray = convertPositionToArray(rover) as PositionArray;
 
-    if (newX === roverArray[0] && newY === roverArray[1]) return true;
-    return false;
+    return newX === roverArray[0] && newY === roverArray[1];
   });
 }
 
