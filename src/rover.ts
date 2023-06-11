@@ -1,6 +1,4 @@
-const ALL_DIRECTIONS = ['L', 'R'];
-const ONLY_MOVEMENT = 'M';
-const CARDINALS = ['N', 'E', 'S', 'W']
+import { isInstruction, convertPositionToArray, ALL_DIRECTIONS, ONLY_MOVEMENT, CARDINALS } from "./type_checks";
 
 type Direction = typeof ALL_DIRECTIONS[number];
 type Movement = typeof ONLY_MOVEMENT;
@@ -88,14 +86,14 @@ function moveRover(grid: Grid, position: Position, instruction: Instruction, oth
 }
 
 function checkCollision(newX: number, newY: number, otherRovers: ArrayOfPositions) {
-  return !!otherRovers.filter((rover: Position | null) => {
+  return otherRovers.some((rover: Position | null) => {
     if (rover === null) return false;
 
-    const roverArray: PositionArray = convertPositionToArray(rover);
+    const roverArray: PositionArray = convertPositionToArray(rover) as PositionArray;
 
     if (newX === roverArray[0] && newY === roverArray[1]) return true;
     return false;
-  }).length;
+  });
 }
 
 function keepInBound(coordinate: number, maxBound: number) {
@@ -107,24 +105,4 @@ function keepInBound(coordinate: number, maxBound: number) {
 
 function reposition(x: number, y: number, direction: CardinalDirections, grid: Grid) {
   return MOVES[direction](x, y).map((coordinate: number, idx: 0 | 1) => keepInBound(coordinate, grid[idx]));
-}
-
-function isInstruction(instructions: string[]) {
-  return instructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a));
-}
-
-function convertPositionToArray(position: string) {
-  const positionArray = position.split(' ');
-  if (positionArray.length !== 3) throw new Error("starting position must be in the form 'number number cardinalDirection'");
-
-  const xPosition: number = parseInt(positionArray[0]);
-  const yPosition: number = parseInt(positionArray[1]);
-
-  if (isNaN(xPosition + yPosition)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
-
-  const direction = positionArray[2];
-
-  if (!CARDINALS.includes(direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
-
-  return [xPosition, yPosition, direction] as PositionArray;
 }
