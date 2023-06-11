@@ -46,14 +46,20 @@ const MOVES : MoveFunctions = {
   W: west
 } as const;
 
-export function runRovers([gridString, startPoint, instructions]: [GridString, Position, string]) {
-  const allInstructions: Instruction[] = instructions.split('') as Instruction[];
-
-  if (!allInstructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a))) throw new Error("Instructions must only include M, L or R");
+export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
+  const arr = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
 
   const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
 
-  return [allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction), startPoint)];
+  return arr.map(index => runSingleRover(grid, args[index] as Position, args[index + 1]));
+}
+
+function runSingleRover(grid: Grid, startPoint: Position, instructions: string) {
+  const allInstructions: Instruction[] = instructions.split('') as Instruction[];
+  console.log(instructions);
+  if (!allInstructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a))) throw new Error("Instructions must only include M, L or R");
+
+  return allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction), startPoint);
 }
 
 function moveRover(grid: Grid, position: Position, instruction: Instruction) {

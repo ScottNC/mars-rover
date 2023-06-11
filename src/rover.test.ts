@@ -68,4 +68,9 @@ describe("runRovers", () => {
   it("should carry on moving after hitting boundary", () => {
     expect(runRovers(['3 3', '2 2 N', 'MMMMLMLMM'])).toEqual(['1 1 S']);
   });
+
+  it("should move two rovers", () => {
+    expect(runRovers(['5 5', '0 0 N', 'M', '5 5 W', 'MLM'])).toEqual(['0 1 N', '4 4 S']);
+  });
+
 });
