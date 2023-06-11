@@ -51,13 +51,19 @@ export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
 
   const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
 
-  return arr.map(index => runSingleRover(grid, args[index] as Position, args[index + 1]));
+  return arr.map(index => {
+    try {
+      return runSingleRover(grid, args[index] as Position, args[index + 1]);
+    } catch (e) {
+      return null;
+    }
+  });
 }
 
 function runSingleRover(grid: Grid, startPoint: Position, instructions: string) {
   const allInstructions: Instruction[] = instructions.split('') as Instruction[];
-  console.log(instructions);
-  if (!allInstructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a))) throw new Error("Instructions must only include M, L or R");
+
+  if (!isInstruction(allInstructions)) throw new Error("Instructions must only include M, L or R");
 
   return allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction), startPoint);
 }
@@ -83,4 +89,8 @@ function keepInBound(coordinate: number, maxBound: number) {
 
 function reposition(x: number, y: number, direction: CardinalDirections, grid: Grid) {
   return MOVES[direction](x, y).map((coordinate: number, idx: 0 | 1) => keepInBound(coordinate, grid[idx]));
+}
+
+function isInstruction(instructions: string[]) {
+  return instructions.every(a => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a));
 }
