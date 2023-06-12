@@ -7,15 +7,15 @@ export function isInstruction(instructions: string[]) {
 }
 
 export function convertPositionToArray(position: string) {
-  const positionArray = position.split(' ');
-  if (positionArray.length !== 3) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+  const positionAsArray = position.split(' ');
+  if (positionAsArray.length !== 3) throw new Error("starting position must be in the form 'number number cardinalDirection'");
 
-  const xPosition: number = parseInt(positionArray[0]);
-  const yPosition: number = parseInt(positionArray[1]);
+  const xPosition: number = parseInt(positionAsArray[0]);
+  const yPosition: number = parseInt(positionAsArray[1]);
 
   if (isNaN(xPosition + yPosition)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
 
-  const direction = positionArray[2];
+  const direction = positionAsArray[2];
 
   if (!CARDINALS.includes(direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
 
