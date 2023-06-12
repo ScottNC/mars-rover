@@ -76,10 +76,9 @@ function moveRover(grid: Grid, position: Position, instruction: Instruction, oth
 
   let [xPosition, yPosition, direction] : PositionArray = convertPositionToArray(position) as PositionArray;
 
-  if (instruction === ONLY_MOVEMENT) {
-    const [newX, newY] = reposition(xPosition, yPosition, direction, grid);
-    [xPosition, yPosition] = checkCollision(newX, newY, otherRovers) ? [xPosition, yPosition] : [newX, newY];
-  } else
+  if (instruction === ONLY_MOVEMENT)
+    [xPosition, yPosition] = reposition(xPosition, yPosition, direction, grid, otherRovers);
+  else
     direction = CARDINAL_DIRECTIONS_MAP[instruction][direction];
 
   return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
@@ -95,13 +94,11 @@ function checkCollision(newX: number, newY: number, otherRovers: ArrayOfPosition
   });
 }
 
-function keepInBound(coordinate: number, maxBound: number) {
-  if (coordinate <= 0)
-    return 0;
-
-  return coordinate >= maxBound ? maxBound : coordinate;
+function isInvalidMove(newX: number, newY: number, grid: Grid, otherRovers: ArrayOfPositions) {
+  return newX < 0 || newY < 0 || newX > grid[0] || newY > grid[1] || checkCollision(newX, newY, otherRovers);
 }
 
-function reposition(x: number, y: number, direction: CardinalDirections, grid: Grid) {
-  return MOVES[direction](x, y).map((coordinate: number, idx: 0 | 1) => keepInBound(coordinate, grid[idx]));
+function reposition(x: number, y: number, direction: CardinalDirections, grid: Grid, otherRovers: ArrayOfPositions) {
+  const [newX, newY] : [number, number] = MOVES[direction](x, y);
+  return isInvalidMove(newX, newY, grid, otherRovers) ? [x, y] : [newX, newY];
 }
