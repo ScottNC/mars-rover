@@ -1,4 +1,4 @@
-import { runRovers } from "./rover";
+import { runRovers } from "../rover";
 describe("runRovers", () => {
   it("should move 1 step north", () => {
     expect(runRovers(['1 1', '0 0 N', 'M'])).toEqual(['0 1 N']);
