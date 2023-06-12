@@ -1,11 +1,9 @@
-import { convertPositionToArray, CARDINALS } from "./type_checks";
+import { convertPositionToArray, CardinalDirections } from "./type_checks";
 
-export type CardinalDirections = typeof CARDINALS[number];
 export type Grid = [number, number];
 export type Position = `${number} ${number} ${CardinalDirections}`;
 export type PositionAsArray = [number, number, CardinalDirections];
 export type ArrayOfPositions = (Position | null)[];
-
 
 const north = (x: number, y: number) => [x, y + 1];
 const south = (x: number, y: number) => [x, y - 1];

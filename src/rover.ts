@@ -1,32 +1,8 @@
-import { isInstruction, convertPositionToArray, ALL_DIRECTIONS, ONLY_MOVEMENT } from "./type_checks";
-import { drive, CardinalDirections, Grid, Position, PositionAsArray, ArrayOfPositions } from "./reposition_rover";
+import { isInstruction, convertPositionToArray, Instruction, ONLY_MOVEMENT } from "./type_checks";
+import { drive, Grid, Position, PositionAsArray, ArrayOfPositions } from "./drive_rover";
+import { rotate } from "./rotate_rover";
 
-type Direction = typeof ALL_DIRECTIONS[number];
-type Movement = typeof ONLY_MOVEMENT;
-type Instruction = Movement | Direction;
-
-type CardinalDirectionMap = {
-  [key in Direction]: {[key in CardinalDirections] : CardinalDirections};
-};
-
-type GridString = `${number} ${number}`
-
-const CARDINAL_DIRECTIONS_MAP: CardinalDirectionMap = {
-  R : {
-    N: 'E',
-    E: 'S',
-    S: 'W',
-    W: 'N'
-  },
-  L : {
-    N: 'W',
-    W: 'S',
-    S: 'E',
-    E: 'N'
-  }
-} as const;
-
-export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
+export function runRovers([gridString, ...args]: [`${number} ${number}`, ...string[]]) {
   const evenNumbers: number[] = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
 
   const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
@@ -59,7 +35,7 @@ function moveRover(grid: Grid, position: Position, instruction: Instruction, oth
   if (instruction === ONLY_MOVEMENT)
     [xPosition, yPosition] = drive(xPosition, yPosition, direction, grid, otherRovers);
   else
-    direction = CARDINAL_DIRECTIONS_MAP[instruction][direction];
+    direction = rotate(instruction, direction);
 
   return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
 }
