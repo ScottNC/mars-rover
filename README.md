@@ -22,8 +22,14 @@ You can have as many rovers as you'd like.
 
 One rover will make all of its instructions at a time. Rover 2 will not start moving until Rover 1 has finished.
 
-Rovers cannot start in the same place.
-
 If a rover is driving outside the grid, it will not move but will carry on with the other instructions is possible.
 
 The same rule applies to if it's about to crash into another rover.
+
+A rover cannot start in the same place as a previous rover.
+
+A rover cannot drive into the final position of a previous rover or into the initial position of a rover that hasn't moved.
+
+A rover cannot start outside the grid.
+
+If any of the two previous rules are broken the program will return null.
