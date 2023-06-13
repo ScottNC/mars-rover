@@ -1,16 +1,19 @@
-import { convertInstructionsToArray, convertPositionToArray, Instruction, ONLY_MOVEMENT } from "./convert_to_array";
-import { drive, Grid, Position, PositionAsArray, ArrayOfPositions } from "./drive_rover";
+import { convertInstructionsToArray, convertPositionToArray, Instruction, Grid, ONLY_MOVEMENT, convertGridToArray } from "./convert_to_array";
+import { drive, Position, PositionAsArray, ArrayOfPositions } from "./drive_rover";
 import { rotate } from "./rotate_rover";
 
-export function runRovers([gridString, ...args]: [`${number} ${number}`, ...string[]]) {
+export type GridString = `${number} ${number}`;
+
+export function runRovers([gridString, ...args]: [GridString, ...string[]]) {
   const evenNumbers: number[] = Array.from({ length: args.length / 2 }, (_, i) => 2 * i);
 
-  const grid: Grid = gridString.split(' ').map(a => parseInt(a)) as Grid;
+  const grid: (Grid | null) = convertGridToArray(gridString) || null;
 
   const newPositions: ArrayOfPositions = [];
 
   return evenNumbers.reduce((newPositions, index) => {
     try {
+      if (grid === null) throw new Error("Grid must be 2 numbers");
       newPositions.push(runSingleRover(grid, args[index] as Position, args[index + 1], newPositions));
       return newPositions;
     } catch (e) {

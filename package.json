@@ -2,10 +2,10 @@
   "name": "mars-rover",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "tsc  --project tsconfig.build.json",
-    "start": "nodemon src/index.ts",
+    "start": "nodemon index.ts",
     "test": "jest --watch"
   },
   "keywords": [],
