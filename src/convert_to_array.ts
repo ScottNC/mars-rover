@@ -7,6 +7,7 @@ export type Instruction = typeof ONLY_MOVEMENT | Direction;
 export type CardinalDirections = typeof CARDINALS[number];
 
 export type Grid = [number, number];
+export type Position = `${number} ${number} ${CardinalDirections}`;
 
 export function convertInstructionsToArray(instructions: string) {
   const allInstructions : string [] = instructions.split('');
@@ -18,16 +19,16 @@ export function convertInstructionsToArray(instructions: string) {
 
 export function convertPositionToArray(position: string) {
   const positionAsArray = position.split(' ');
-  if (positionAsArray.length !== 3) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+  if (positionAsArray.length !== 3) return null;
 
   const xPosition: number = parseInt(positionAsArray[0]);
   const yPosition: number = parseInt(positionAsArray[1]);
 
-  if (isNaN(xPosition + yPosition)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+  if (isNaN(xPosition + yPosition)) return null;
 
   const direction: string = positionAsArray[2];
 
-  if (!([...CARDINALS] as string[]).includes(direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+  if (!([...CARDINALS] as string[]).includes(direction)) return null;
 
   return [xPosition, yPosition, direction as CardinalDirections];
 }

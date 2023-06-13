@@ -1,11 +1,12 @@
-import { runRovers, GridString } from './src/rover';
-import { convertGridToArray } from './src/convert_to_array';
+import { runRovers, GridString, Rovers } from './src/rover';
+import { convertGridToArray, convertPositionToArray, Position } from './src/convert_to_array';
 import * as readline from 'node:readline';
 
-let input: string[] = [];
+let rovers: Rovers = [];
 let roverCount: number;
 let roverIteration: number = 0;
 let gridStr: GridString;
+let currentPosition: Position;
 
 const reader = readline.createInterface({
 	input: process.stdin,
@@ -39,11 +40,11 @@ function askPosition(instruction: string | null) {
   roverIteration++;
 
   if (instruction !== null) 
-    input.push(instruction);
+    rovers.push([currentPosition, instruction]);
 
   if (roverIteration > roverCount) {
     console.log('--------------------');
-    runRovers([gridStr, ...input]).forEach((position) => console.log(position));
+    runRovers(gridStr, rovers).forEach((position) => console.log(position));
     console.log('--------------------');
     return askAgain();
   }
@@ -53,7 +54,10 @@ function askPosition(instruction: string | null) {
 }
 
 function askInstructions(position: string) {
-  input.push(position)
+  if (convertPositionToArray(position) === null)
+    return reader.question(`What is the starting position of rover ${roverIteration.toString()}? (Please give answer such as 3 3 N)\n`, askInstructions);
+
+  currentPosition = position as Position;
   return reader.question(`What instructions are you giving rover ${roverIteration.toString()}?\n`, askPosition);
 }
 

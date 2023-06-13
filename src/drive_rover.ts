@@ -1,6 +1,5 @@
-import { convertPositionToArray, CardinalDirections, Grid } from "./convert_to_array";
+import { convertPositionToArray, CardinalDirections, Grid, Position } from "./convert_to_array";
 
-export type Position = `${number} ${number} ${CardinalDirections}`;
 export type PositionAsArray = [number, number, CardinalDirections];
 export type ArrayOfPositions = (Position | null)[];
 
