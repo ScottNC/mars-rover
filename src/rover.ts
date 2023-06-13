@@ -1,4 +1,16 @@
-import { convertInstructionsToArray, convertPositionToArray, Instruction, Grid, Position, PositionAsArray, ArrayOfPositions, ONLY_MOVEMENT, convertGridToArray, convertPositionToString } from "./convert_types";
+import { 
+  convertInstructionsToArray,
+  convertPositionToArray,
+  Instruction,
+  Grid,
+  Position,
+  PositionAsArray,
+  ArrayOfPositions,
+  ONLY_MOVEMENT,
+  convertGridToArray,
+  convertPositionToString
+} from "./convert_types";
+
 import { drive, isInvalidMove } from "./drive_rover";
 import { rotate } from "./rotate_rover";
 
