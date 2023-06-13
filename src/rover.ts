@@ -16,7 +16,11 @@ export function runRovers(gridString: GridString, rovers: Rovers) {
   return rovers.reduce((newPositions, rover, index) => {
     try {
       if (grid === null) throw new Error("Grid must be 2 numbers");
-      newPositions.push(runSingleRover(grid, rover[0], rover[1], [...newPositions, ...oldPositions.slice(index + 1)]));
+
+      if (oldPositions.slice(0, index).some((otherRover: Position | null) => otherRover && otherRover.slice(0, -1) === rover[0].slice(0, -1)))
+        throw new Error("multiple rovers cannot stat in the same place");
+
+      newPositions.push(runSingleRover(grid, rover[0], rover[1], [...newPositions || [], ...oldPositions.slice(index + 1) || []]));
       return newPositions;
     } catch (e) {
       newPositions.push(null);
