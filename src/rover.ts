@@ -1,4 +1,4 @@
-import { isInstruction, convertPositionToArray, Instruction, ONLY_MOVEMENT } from "./type_checks";
+import { convertInstructionsToArray, convertPositionToArray, Instruction, ONLY_MOVEMENT } from "./type_checks";
 import { drive, Grid, Position, PositionAsArray, ArrayOfPositions } from "./drive_rover";
 import { rotate } from "./rotate_rover";
 
@@ -21,10 +21,7 @@ export function runRovers([gridString, ...args]: [`${number} ${number}`, ...stri
 }
 
 function runSingleRover(grid: Grid, startPoint: Position, instructions: string, otherRovers: ArrayOfPositions) {
-  const allInstructions: Instruction[] = instructions.split('');
-
-  if (!isInstruction(allInstructions)) throw new Error("Instructions must only include M, L or R");
-
+  const allInstructions: Instruction[] = convertInstructionsToArray(instructions);
   return allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction, otherRovers), startPoint);
 }
 

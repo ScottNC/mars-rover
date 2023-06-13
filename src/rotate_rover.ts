@@ -1,4 +1,4 @@
-import { Direction, Instruction, CardinalDirections } from "./type_checks";
+import { Direction, CardinalDirections } from "./type_checks";
 
 type CardinalDirectionMap = {
   [key in Direction]: {[key in CardinalDirections] : CardinalDirections};
@@ -19,6 +19,6 @@ const CARDINAL_DIRECTIONS_MAP: CardinalDirectionMap = {
   }
 } as const;
 
-export function rotate(instruction: Instruction, direction: Direction) {
+export function rotate(instruction: Direction, direction: CardinalDirections) {
   return CARDINAL_DIRECTIONS_MAP[instruction][direction];
 }
