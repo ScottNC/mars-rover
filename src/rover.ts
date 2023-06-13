@@ -11,10 +11,12 @@ export function runRovers(gridString: GridString, rovers: Rovers) {
 
   const newPositions: ArrayOfPositions = [];
 
-  return rovers.reduce((newPositions, rover) => {
+  const oldPositions: ArrayOfPositions = rovers.map(rover => rover[0]);
+
+  return rovers.reduce((newPositions, rover, index) => {
     try {
       if (grid === null) throw new Error("Grid must be 2 numbers");
-      newPositions.push(runSingleRover(grid, rover[0], rover[1], newPositions));
+      newPositions.push(runSingleRover(grid, rover[0], rover[1], [...newPositions, ...oldPositions.slice(index + 1)]));
       return newPositions;
     } catch (e) {
       newPositions.push(null);
