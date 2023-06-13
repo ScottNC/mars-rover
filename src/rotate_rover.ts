@@ -1,4 +1,4 @@
-import { Direction, CardinalDirections } from "./type_checks";
+import { Direction, CardinalDirections } from "./convert_to_array";
 
 type CardinalDirectionMap = {
   [key in Direction]: {[key in CardinalDirections] : CardinalDirections};

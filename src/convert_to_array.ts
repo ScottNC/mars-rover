@@ -1,5 +1,5 @@
 export const ALL_DIRECTIONS = ['L', 'R'] as const;
-export const ONLY_MOVEMENT = 'M';
+export const ONLY_MOVEMENT = 'M' as const;
 export const CARDINALS = ['N', 'E', 'S', 'W'] as const;
 
 export type Direction = typeof ALL_DIRECTIONS[number];
@@ -9,7 +9,7 @@ export type CardinalDirections = typeof CARDINALS[number];
 export function convertInstructionsToArray(instructions: string) {
   const allInstructions : string [] = instructions.split('');
 
-  if (!allInstructions.every((a: string) => [...ALL_DIRECTIONS, ONLY_MOVEMENT].includes(a))) throw new Error("Instructions must only include M, L or R");
+  if (!allInstructions.every((a: string) => ([...ALL_DIRECTIONS, ONLY_MOVEMENT] as string[]).includes(a))) throw new Error("Instructions must only include M, L or R");
 
   return allInstructions as Instruction[];
 }
@@ -25,7 +25,7 @@ export function convertPositionToArray(position: string) {
 
   const direction: string = positionAsArray[2];
 
-  if (!CARDINALS.some((a: string) => a === direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
+  if (!([...CARDINALS] as string[]).includes(direction)) throw new Error("starting position must be in the form 'number number cardinalDirection'");
 
   return [xPosition, yPosition, direction as CardinalDirections];
 }

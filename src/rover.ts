@@ -1,4 +1,4 @@
-import { convertInstructionsToArray, convertPositionToArray, Instruction, ONLY_MOVEMENT } from "./type_checks";
+import { convertInstructionsToArray, convertPositionToArray, Instruction, ONLY_MOVEMENT } from "./convert_to_array";
 import { drive, Grid, Position, PositionAsArray, ArrayOfPositions } from "./drive_rover";
 import { rotate } from "./rotate_rover";
 

@@ -1,4 +1,4 @@
-import { convertPositionToArray, CardinalDirections } from "./type_checks";
+import { convertPositionToArray, CardinalDirections } from "./convert_to_array";
 
 export type Grid = [number, number];
 export type Position = `${number} ${number} ${CardinalDirections}`;
