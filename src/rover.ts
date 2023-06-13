@@ -1,5 +1,5 @@
-import { convertInstructionsToArray, convertPositionToArray, Instruction, Grid, Position, ONLY_MOVEMENT, convertGridToArray } from "./convert_to_array";
-import { drive, PositionAsArray, ArrayOfPositions } from "./drive_rover";
+import { convertInstructionsToArray, convertPositionToArray, Instruction, Grid, Position, PositionAsArray, ArrayOfPositions, ONLY_MOVEMENT, convertGridToArray, convertPositionToString } from "./convert_types";
+import { drive, isInvalidMove } from "./drive_rover";
 import { rotate } from "./rotate_rover";
 
 export type GridString = `${number} ${number}`;
@@ -17,10 +17,12 @@ export function runRovers(gridString: GridString, rovers: Rovers) {
     try {
       if (grid === null) throw new Error("Grid must be 2 numbers");
 
-      if (oldPositions.slice(0, index).some((otherRover: Position | null) => otherRover && otherRover.slice(0, -1) === rover[0].slice(0, -1)))
-        throw new Error("multiple rovers cannot stat in the same place");
+      const posArr: PositionAsArray = convertPositionToArray(rover[0]) as PositionAsArray;
 
-      newPositions.push(runSingleRover(grid, rover[0], rover[1], [...newPositions || [], ...oldPositions.slice(index + 1) || []]));
+      if (isInvalidMove(posArr[0], posArr[1], grid, oldPositions.slice(0, index)))
+        throw new Error("cannot start rover outside grid");
+
+      newPositions.push(convertPositionToString(runSingleRover(grid, posArr, rover[1], [...newPositions, ...oldPositions.slice(index + 1)])));
       return newPositions;
     } catch (e) {
       newPositions.push(null);
@@ -29,19 +31,19 @@ export function runRovers(gridString: GridString, rovers: Rovers) {
   }, newPositions);
 }
 
-function runSingleRover(grid: Grid, startPoint: Position, instructions: string, otherRovers: ArrayOfPositions) {
+function runSingleRover(grid: Grid, startPoint: PositionAsArray, instructions: string, otherRovers: ArrayOfPositions) {
   const allInstructions: Instruction[] = convertInstructionsToArray(instructions);
-  return allInstructions.reduce((position: Position, instruction: Instruction) => moveRover(grid, position, instruction, otherRovers), startPoint);
+  return allInstructions.reduce((position: PositionAsArray, instruction: Instruction) => moveRover(grid, position, instruction, otherRovers), startPoint);
 }
 
-function moveRover(grid: Grid, position: Position, instruction: Instruction, otherRovers: ArrayOfPositions) {
+function moveRover(grid: Grid, position: PositionAsArray, instruction: Instruction, otherRovers: ArrayOfPositions) {
 
-  let [xPosition, yPosition, direction] : PositionAsArray = convertPositionToArray(position) as PositionAsArray;
+  let [xPosition, yPosition, direction] : PositionAsArray = position;
 
   if (instruction === ONLY_MOVEMENT)
     [xPosition, yPosition] = drive(xPosition, yPosition, direction, grid, otherRovers);
   else
     direction = rotate(instruction, direction);
 
-  return [xPosition.toString(), yPosition.toString(), direction].join(' ') as Position;
+  return [xPosition, yPosition, direction] as PositionAsArray;
 }

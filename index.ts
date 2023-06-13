@@ -1,5 +1,5 @@
 import { runRovers, GridString, Rovers } from './src/rover';
-import { convertGridToArray, convertPositionToArray, Position } from './src/convert_to_array';
+import { convertGridToArray, convertPositionToArray, Position } from './src/convert_types';
 import * as readline from 'node:readline';
 
 let rovers: Rovers = [];

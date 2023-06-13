@@ -1,7 +1,4 @@
-import { convertPositionToArray, CardinalDirections, Grid, Position } from "./convert_to_array";
-
-export type PositionAsArray = [number, number, CardinalDirections];
-export type ArrayOfPositions = (Position | null)[];
+import { convertPositionToArray, CardinalDirections, Grid, Position, PositionAsArray, ArrayOfPositions } from "./convert_types";
 
 const north = (x: number, y: number) => [x, y + 1];
 const south = (x: number, y: number) => [x, y - 1];
@@ -32,6 +29,6 @@ function checkCollision(newX: number, newY: number, otherRovers: ArrayOfPosition
   });
 }
 
-function isInvalidMove(newX: number, newY: number, grid: Grid, otherRovers: ArrayOfPositions) {
+export function isInvalidMove(newX: number, newY: number, grid: Grid, otherRovers: ArrayOfPositions) {
   return newX < 0 || newY < 0 || newX > grid[0] || newY > grid[1] || checkCollision(newX, newY, otherRovers);
 }

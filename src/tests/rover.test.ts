@@ -92,4 +92,11 @@ describe("runRovers", () => {
   it("should not be able to place second rover in place of previous rover", () => {
     expect(runRovers('5 5', [['0 0 N', 'M'], ['0 0 E', 'M']])).toEqual(['0 1 N', null]);
   });
+
+  it("should not be able to start outside the grid", () => {
+    expect(runRovers('5 5', [['-1 0 N', 'M']])).toEqual([null]);
+    expect(runRovers('5 5', [['0 -1 N', 'M']])).toEqual([null]);
+    expect(runRovers('5 5', [['0 6 N', 'M']])).toEqual([null]);
+    expect(runRovers('5 5', [['6 0 N', 'M']])).toEqual([null]);
+  });
 });

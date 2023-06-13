@@ -8,6 +8,8 @@ export type CardinalDirections = typeof CARDINALS[number];
 
 export type Grid = [number, number];
 export type Position = `${number} ${number} ${CardinalDirections}`;
+export type PositionAsArray = [number, number, CardinalDirections];
+export type ArrayOfPositions = (Position | null)[];
 
 export function convertInstructionsToArray(instructions: string) {
   const allInstructions : string [] = instructions.split('');
@@ -39,4 +41,8 @@ export function convertGridToArray(gridString: string) {
   if (output.length !== 2 || output.some(isNaN)) return null;
 
   return output as Grid;
+}
+
+export function convertPositionToString(position: PositionAsArray) {
+  return `${position[0].toString()} ${position[1].toString()} ${position[2]}` as Position;
 }
