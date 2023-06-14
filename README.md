@@ -39,3 +39,17 @@ If any of the two previous rules are broken the program will return null.
   - First run `npm i`
 
   - Then type `npm run-script fileInput /path/to/input.txt /path/to/output.txt`.
+
+## Things to do in the future
+
+  - Have different shapes other than rectangular plateaus
+
+    - Use a hexagonal based grid as a plateau
+
+    - Keep but the grid is restricted to a certain shape (i.e circles)
+
+  - Insert obstacles in the plateau
+
+  - Reverse the problem. Try inputting a goal destination and have the code output a set of instructions that avoids other rovers.
+
+  - Use a config file to change the rules. For example rovers can fall off the plateau or crash into each other.
