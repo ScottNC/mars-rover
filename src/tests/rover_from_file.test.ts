@@ -27,4 +27,14 @@ describe('runRoversFromFile', () => {
     await runRoversFromFile('src/tests/input_test/input_test2.txt', tempFilePath)
     compareOutput('src/tests/output_test/output_test2.txt')
   })
+
+  it('should be able to output a file with an empty line for invalid grid', async () => {
+    await runRoversFromFile('src/tests/input_test/input_test3.txt', tempFilePath)
+    compareOutput('src/tests/output_test/output_test3.txt')
+  })
+
+  it('should be able to output a file when inputting empty line at the end', async () => {
+    await runRoversFromFile('src/tests/input_test/input_test4.txt', tempFilePath)
+    compareOutput('src/tests/output_test/output_test4.txt')
+  })
 });
