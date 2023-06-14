@@ -19,7 +19,7 @@ export type Rovers = [Position, string][]
 
 export function runRovers(gridString: GridString, rovers: Rovers) {
 
-  const grid: (Grid | null) = convertGridToArray(gridString) || null;
+  const grid: (Grid | null) = convertGridToArray(gridString);
 
   const newPositions: ArrayOfPositions = [];
 
@@ -27,16 +27,21 @@ export function runRovers(gridString: GridString, rovers: Rovers) {
 
   return rovers.reduce((newPositions, rover, index) => {
     try {
+
+      // useful for inputting from a text file
       if (grid === null) throw new Error("Grid must be 2 numbers");
 
       const posArr: PositionAsArray = convertPositionToArray(rover[0]) as PositionAsArray;
 
+      // checks if initial positions is outside grid or the same as previous initial positions
       if (isInvalidMove(posArr[0], posArr[1], grid, oldPositions.slice(0, index)))
         throw new Error("cannot start rover outside grid");
 
       newPositions.push(convertPositionToString(runSingleRover(grid, posArr, rover[1], [...newPositions, ...oldPositions.slice(index + 1)])));
       return newPositions;
     } catch (e) {
+
+      // if any errors happen the code we will add null so other rovers can make thier movements
       newPositions.push(null);
       return newPositions;
     }
