@@ -36,8 +36,8 @@ If any of the two previous rules are broken the program will return null.
 
 ## How to input a file
 
-    - First run `npm i`
+  - First run `npm i`
 
-    - Then type `npm run fileInput input.txt output.txt` but replace input and output with your filepaths.
+  - Then type `npm run fileInput input.txt output.txt` but replace input and output with your filepaths.
 
-    - Fianlly run `rimraf **/*.js && rimraf **/**/*.js` to delete all the Javascript files
+  - Fianlly run `rimraf **/*.js && rimraf **/**/*.js` to delete all the Javascript files
