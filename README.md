@@ -1,12 +1,12 @@
-## Mars Rover Project
+# Mars Rover Project
 
-# Welcome to the surface of Mars
+## Welcome to the surface of Mars
 
 This code will input a grid size, initial coordinates and movements for Mars Rovers
 
 The program will find the position and direction the rovers will end in when movement's finished
 
-# How the code works
+## How the code works
 
 Type 'npm start' into the command line to begin the program.
 
@@ -20,7 +20,7 @@ You will be asked a set of questions about your set-up. These involve:
 
 You can have as many rovers as you'd like.
 
-# Rules
+## Rules
 
   - One rover will make all of its instructions at a time. Rover 2 will not start moving until Rover 1 has finished.
 
