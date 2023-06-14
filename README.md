@@ -38,6 +38,4 @@ If any of the two previous rules are broken the program will return null.
 
   - First run `npm i`
 
-  - Then type `npm run fileInput /path/to/input.txt /path/to/output.txt`.
-
-  - Fianlly run `rimraf **/*.js && rimraf **/**/*.js` to delete all the Javascript files
+  - Then type `npm run-script fileInput /path/to/input.txt /path/to/output.txt`.
