@@ -44,7 +44,11 @@ export function runRovers(gridString: GridString, rovers: Rovers) {
 }
 
 function runSingleRover(grid: Grid, startPoint: PositionAsArray, instructions: string, otherRovers: ArrayOfPositions) {
-  const allInstructions: Instruction[] = convertInstructionsToArray(instructions);
+  const allInstructions: (Instruction[] | null) = convertInstructionsToArray(instructions);
+
+  if (allInstructions === null)
+    throw new Error("Instructions must only include M, L or R");
+    
   return allInstructions.reduce((position: PositionAsArray, instruction: Instruction) => moveRover(grid, position, instruction, otherRovers), startPoint);
 }
 

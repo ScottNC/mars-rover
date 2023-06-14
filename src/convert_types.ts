@@ -15,7 +15,7 @@ export function convertInstructionsToArray(instructions: string) {
   const allInstructions : string [] = instructions.split('');
 
   if (!allInstructions.every((a: string) => ([...ALL_DIRECTIONS, ONLY_MOVEMENT] as string[]).includes(a)))
-    throw new Error("Instructions must only include M, L or R");
+    return null;
 
   return allInstructions as Instruction[];
 }
