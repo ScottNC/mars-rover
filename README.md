@@ -8,7 +8,7 @@ The program will find the position and direction the rovers will end in when mov
 
 ## How the code works
 
-Type 'npm start' into the command line to begin the program.
+Type `npm start` into the command line to begin the program.
 
 You will be asked a set of questions about your set-up. These involve:
 
@@ -33,3 +33,11 @@ You can have as many rovers as you'd like.
   - A rover cannot start outside the grid.
 
 If any of the two previous rules are broken the program will return null.
+
+## How to input a file
+
+    - First run `npm i`
+
+    - Then type `npm run fileInput input.txt output.txt` but replace input and output with your filepaths.
+
+    - Fianlly run `rimraf **/*.js && rimraf **/**/*.js` to delete all the Javascript files
