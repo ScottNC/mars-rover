@@ -1,11 +1,11 @@
 import { convertPositionToArray, CardinalDirections, Grid, Position, PositionAsArray, ArrayOfPositions } from "./convert_types";
 
-const north = (x: number, y: number) => [x, y + 1];
-const south = (x: number, y: number) => [x, y - 1];
-const east = (x: number, y: number) => [x + 1, y];
-const west = (x: number, y: number) => [x - 1, y];
+const north = (x: number, y: number) : [number, number] => [x, y + 1];
+const south = (x: number, y: number) : [number, number] => [x, y - 1];
+const east = (x: number, y: number) : [number, number] => [x + 1, y];
+const west = (x: number, y: number) : [number, number] => [x - 1, y];
 
-type MoveFunctions = {[key in CardinalDirections] : Function};
+type MoveFunctions = {[key in CardinalDirections] : (x: number, y: number) => [number, number]};
 
 const MOVES : MoveFunctions = {
   N: north,
